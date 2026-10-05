@@ -1,0 +1,337 @@
+/* ─────────────────────────────────────────────────────────────────────
+   Оформление в системе Apple: San Francisco, системная палитра,
+   группированные фоны, полупрозрачные слои с размытием.
+   Одни и те же токены в обеих темах — компоненты про тему не знают.
+   ───────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Типографика — системный стек: на устройствах Apple это San Francisco. */
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+          'Segoe UI Variable', 'Segoe UI', Inter, system-ui, sans-serif;
+  --font-numeric: var(--font);
+
+  /* Масштаб по HIG: заголовки крупные и плотные, текст 17/15/13. */
+  --text-large-title: 34px;
+  --text-title-1: 28px;
+  --text-title-2: 22px;
+  --text-title-3: 20px;
+  --text-body: 17px;
+  --text-callout: 16px;
+  --text-subhead: 15px;
+  --text-footnote: 13px;
+  --text-caption: 12px;
+
+  /* Отступы кратны четырём — как в системных макетах. */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  /* Скругления континуальные: у Apple крупные и мягкие. */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+  --r-full: 999px;
+
+  --dur: 280ms;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1); /* пружинистая кривая системных переходов */
+}
+
+/* ─── Светлая тема ─────────────────────────────────────────────────── */
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f2f2f7;              /* systemGroupedBackground */
+  --bg-elevated: #ffffff;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-solid: #ffffff;
+  --surface-raised: rgba(255, 255, 255, 0.86);
+
+  --text: #1c1c1e;            /* label */
+  --text-secondary: rgba(60, 60, 67, 0.6);
+  --text-tertiary: rgba(60, 60, 67, 0.3);
+
+  --separator: rgba(60, 60, 67, 0.18);
+  --separator-opaque: #d1d1d6;
+  --fill: rgba(120, 120, 128, 0.12);
+  --fill-strong: rgba(120, 120, 128, 0.2);
+
+  --accent: #007aff;          /* systemBlue */
+  --accent-soft: rgba(0, 122, 255, 0.12);
+  --accent-text: #ffffff;
+
+  --green: #34c759;
+  --orange: #ff9500;
+  --red: #ff3b30;
+  --purple: #af52de;
+  --teal: #30b0c7;
+  --indigo: #5856d6;
+  --pink: #ff2d55;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.16);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-tint: rgba(255, 255, 255, 0.6);
+}
+
+/* ─── Тёмная тема ──────────────────────────────────────────────────── */
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #000000;
+  --bg-elevated: #1c1c1e;
+  --surface: rgba(28, 28, 30, 0.72);
+  --surface-solid: #1c1c1e;
+  --surface-raised: rgba(44, 44, 46, 0.78);
+
+  --text: #ffffff;
+  --text-secondary: rgba(235, 235, 245, 0.6);
+  --text-tertiary: rgba(235, 235, 245, 0.3);
+
+  --separator: rgba(84, 84, 88, 0.6);
+  --separator-opaque: #38383a;
+  --fill: rgba(120, 120, 128, 0.24);
+  --fill-strong: rgba(120, 120, 128, 0.36);
+
+  --accent: #0a84ff;
+  --accent-soft: rgba(10, 132, 255, 0.22);
+  --accent-text: #ffffff;
+
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+  --purple: #bf5af2;
+  --teal: #40cbe0;
+  --indigo: #5e5ce6;
+  --pink: #ff375f;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-float: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-tint: rgba(255, 255, 255, 0.04);
+}
+
+/* ─── База ─────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--text-subhead);
+  line-height: 1.47;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+h2 { font-size: var(--text-large-title); letter-spacing: -0.03em; }
+h3 { font-size: var(--text-title-1); }
+h4 { font-size: var(--text-title-3); letter-spacing: -0.015em; }
+p { margin: 0 0 var(--sp-3); }
+a { color: var(--accent); }
+
+.text-muted { color: var(--text-secondary); }
+.hint { color: var(--text-secondary); font-size: var(--text-footnote); }
+
+::selection { background: var(--accent-soft); }
+
+:focus-visible {
+  outline: 3px solid var(--accent-soft);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* Стеклянный слой: размытие с усилением насыщенности — так делает система. */
+.glass {
+  background: var(--surface);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border: 1px solid var(--glass-border);
+}
+
+/* ─── Кнопки ───────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 9px var(--sp-4);
+  border-radius: var(--r-full);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: var(--text-subhead);
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 120ms var(--ease), background 160ms var(--ease), opacity 160ms var(--ease);
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+.btn-primary { background: var(--accent); color: var(--accent-text); }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+.btn-secondary { background: var(--fill); color: var(--text); }
+.btn-secondary:hover:not(:disabled) { background: var(--fill-strong); }
+
+.btn-ghost { background: transparent; color: var(--accent); }
+.btn-ghost:hover:not(:disabled) { background: var(--fill); }
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+.icon-btn:hover { background: var(--fill); color: var(--text); }
+.icon-btn svg { width: 17px; height: 17px; }
+
+/* ─── Карточки ─────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--surface);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-card);
+}
+.card-kicker { font-size: var(--text-caption); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
+.card-title { font-size: var(--text-title-3); font-weight: 600; letter-spacing: -0.015em; margin-top: 2px; }
+.card-meta { font-size: var(--text-footnote); color: var(--text-secondary); margin-top: 2px; }
+
+/* ─── Поля ─────────────────────────────────────────────────────────── */
+
+.field { display: block; }
+.field label { display: block; font-size: var(--text-footnote); color: var(--text-secondary); margin-bottom: 6px; }
+
+.input {
+  width: 100%;
+  padding: 11px var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  background: var(--fill);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-callout);
+  transition: background 160ms var(--ease), border-color 160ms var(--ease);
+}
+.input::placeholder { color: var(--text-tertiary); }
+.input:focus { outline: none; border-color: var(--accent); background: var(--bg-elevated); }
+.input.num { font-variant-numeric: tabular-nums; }
+
+select.input { appearance: none; cursor: pointer; }
+input[type='date'].input { min-height: 43px; }
+
+input[type='checkbox'] {
+  appearance: none;
+  width: 22px; height: 22px;
+  flex: none;
+  border-radius: var(--r-full);
+  border: 1.5px solid var(--separator-opaque);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: background 160ms var(--ease), border-color 160ms var(--ease);
+}
+input[type='checkbox']:checked { background: var(--accent); border-color: var(--accent); }
+input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 7px; top: 3px;
+  width: 5px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ─── Сегменты ─────────────────────────────────────────────────────── */
+
+.seg {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--r-full);
+  background: var(--fill);
+}
+.seg-opt {
+  position: relative;
+  padding: 7px var(--sp-4);
+  border-radius: var(--r-full);
+  font-size: var(--text-footnote);
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 160ms var(--ease), background 220ms var(--ease);
+}
+.seg-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.seg-opt:has(input:checked) {
+  background: var(--bg-elevated);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* ─── Чипы, теги, значки ───────────────────────────────────────────── */
+
+.chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+
+.chip {
+  padding: 6px var(--sp-4);
+  border-radius: var(--r-full);
+  border: 0;
+  background: var(--fill);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-footnote);
+  cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+.chip:hover { background: var(--fill-strong); }
+.chip[aria-pressed='true'] { background: var(--accent); color: var(--accent-text); }
+
+.badge {
+  font-size: var(--text-caption);
+  font-weight: 500;
+  padding: 3px var(--sp-3);
+  border-radius: var(--r-full);
+  background: var(--fill);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.badge-ok { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green); }
+.badge-warn { background: color-mix(in srgb, var(--orange) 18%, transparent); color: var(--orange); }
+.badge-danger { background: color-mix(in srgb, var(--red) 16%, transparent); color: var(--red); }
+
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: var(--r-full); margin-right: 6px; }
+
+.notice {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: var(--text-footnote);
+}
+.notice-danger { background: color-mix(in srgb, var(--red) 14%, transparent); }
